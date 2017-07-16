@@ -275,9 +275,14 @@ function extend(a, b, thisArg) {
   ClassList.prototype._trim = function(str) {
     return str.replace(/^\s*/, '').replace(/\s*$/, '');
   };
+  ClassList.prototype._formatClassName = function(className) {
+    className = this._trim(className);
+    return className.indexOf(' ') > -1 ? className.replace(' ', ',');
+  };
+
   ClassList.prototype.add = function(node, className) {
-    if(this.hasClassListAttr) {
-      node.classList.add(className);
+    if(this.hasClassListAttr) { 
+      node.classList.add(this._formatClassName(className));
     } else {
       var list = node.className;    
       node.className = list + ' '+ className;
@@ -286,7 +291,7 @@ function extend(a, b, thisArg) {
 
   ClassList.prototype.remove = function(node, className) {
     if(this.hasClassListAttr) {
-      node.classList.remove(className);
+      node.classList.remove(this._formatClassName(className));
     } else {
       var list = node.className;
       var newList = list.replace(className, '');
