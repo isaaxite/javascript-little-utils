@@ -277,7 +277,7 @@ function extend(a, b, thisArg) {
   };
   ClassList.prototype._formatClassName = function(className) {
     className = this._trim(className);
-    return className.indexOf(' ') > -1 ? className.replace(' ', ',');
+    return className.indexOf(' ') > -1 ? className.replace(' ', ',') : className;
   };
 
   ClassList.prototype.add = function(node, className) {
