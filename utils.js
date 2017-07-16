@@ -267,3 +267,53 @@ function extend(a, b, thisArg) {
   });
   return a;
 }
+
+!function() {
+  function ClassList(){
+    this.hasClassListAttr = typeof document.body.classList !== 'undefined';
+  }
+  ClassList.prototype._trim = function(str) {
+    return str.replace(/^\s*/, '').replace(/\s*$/, '');
+  };
+  ClassList.prototype.add = function(node, className) {
+    if(this.hasClassListAttr) {
+      node.classList.add(className);
+    } else {
+      var list = node.className;    
+      node.className = list + ' '+ className;
+    }
+  };
+
+  ClassList.prototype.remove = function(node, className) {
+    if(this.hasClassListAttr) {
+      node.classList.remove(className);
+    } else {
+      var list = node.className;
+      var newList = list.replace(className, '');
+      node.className = this._trim(newList);
+    }
+  };
+
+  ClassList.prototype.contains = function(node, className) {
+    if(this.hasClassListAttr) {
+      return node.classList.contains(className);
+    } else {
+      var list = node.className;
+      return list.indexOf(className) > -1;
+    }
+  };
+
+  ClassList.prototype.toggle = function(node, className) {
+    if(this.hasClassListAttr) {
+      node.classList.toggle(className);
+    } else {
+      var list = node.className;
+      if(list.indexOf(className) > -1) {
+        this.remove(node, className);
+      } else {
+        this.add(node, className);
+      }
+    }
+  };
+  window.classList = new ClassList();
+}();
