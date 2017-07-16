@@ -277,12 +277,13 @@ function extend(a, b, thisArg) {
   };
   ClassList.prototype._formatClassName = function(className) {
     className = this._trim(className);
-    return className.indexOf(' ') > -1 ? className.replace(' ', ',') : className;
+    return className.split(' ');
   };
 
   ClassList.prototype.add = function(node, className) {
     if(this.hasClassListAttr) { 
-      node.classList.add(this._formatClassName(className));
+      var classList = node.classList;
+      classList.add.apply(classList, this._formatClassName(className));
     } else {
       var list = node.className;    
       node.className = list + ' '+ className;
@@ -291,7 +292,8 @@ function extend(a, b, thisArg) {
 
   ClassList.prototype.remove = function(node, className) {
     if(this.hasClassListAttr) {
-      node.classList.remove(this._formatClassName(className));
+      var classList = node.classList;
+      classList.remove.apply(classList, this._formatClassName(className));
     } else {
       var list = node.className;
       var newList = list.replace(className, '');
